@@ -18,11 +18,9 @@
 # *** Entry point ***
 :if ([:len $LastEventLoginID]=0) do={
     :set LastEventLoginID value=0;
-    #:set EventLogStorage [/log find where topics=system,info,account,error,critical and (message~"logged in" or message~"login failure")];
     :set EventLogStorage [/log find where ((topics=system,info,account and (message~"logged in")) or (topics=system,error,critical and (message~"login failure")))];
     :set LastEventLoginID [:tonum ("0x" . [:pick [:tostr ($EventLogStorage->([:len ($EventLogStorage)]-1))] 1 [:len ($EventLogStorage->([:len ($EventLogStorage)]-1))]])];
     } else={
-        #:set EventLogStorage [/log find where topics=system,info,account,error,critical and (message~"logged in")];
         :set EventLogStorage [/log find where ((topics=system,info,account and (message~"logged in")) or (topics=system,error,critical and (message~"login failure")))];
         :foreach k in=($EventLogStorage) do={
             :set $CurrentTimeStamp [/log get $k value-name=time];
