@@ -20,7 +20,7 @@
 
 # *** Entry point ***
 :if ([:len $LastEventLoginID]=0) do={
-    :set LastEventLoginID value=0;
+    :set LastEventLoginID 0;
     :set EventLogStorage [/log find where ((topics=system,info,account and (message~"logged in")) or (topics=system,error,critical and (message~"login failure")))];
     :set LastEventLoginID [:tonum ("0x" . [:pick [:tostr ($EventLogStorage->([:len ($EventLogStorage)]-1))] 1 [:len ($EventLogStorage->([:len ($EventLogStorage)]-1))]])];
     } else={
