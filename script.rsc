@@ -4,16 +4,19 @@
 #Privilegies for running:
 #read, write, policy, test
 
-#ToDo:
-#1. Add no-error={}
-
 :global LastEventLoginID;
+:local CurrentTimeStamp;
+:local Hostname [/system identity get name];
+:local EventLogStorage;
+:local TelegramMessageText;
 :local TelegramBotToken "1234567890:0m9BBWnyHAmjI7ztFwrFicrOwra5A3";
 :local TelegramChatId "-1234567890";
-:local Hostname [/system identity get name];
-:local TelegramMessageText;
-:local EventLogStorage;
-:local CurrentTimeStamp;
+
+#FunctionSendingTelegramMessage
+:global FunctionSendingTelegramMessage do={
+    :tool fetch mode=https url="https://api.telegram.org/bot$1/sendMessage" http-method=post http-data="parse_mode=Markdown&chat_id=$2&text=$3" keep-result=no;
+    :return 0;
+    };
 
 # *** Entry point ***
 :if ([:len $LastEventLoginID]=0) do={
@@ -27,8 +30,8 @@
             :set $CurrentLogMessage [/log get $k value-name=message];
             :if ($LastEventLoginID < [:tonum [("0x" . [:pick [:tostr $k] 1 [:len $k]])]]) do={
                     :set TelegramMessageText ($CurrentTimeStamp . " - " . $Hostname . ":\n" . "`" . $CurrentLogMessage . "`" . "\n---");
-                    :tool fetch mode=https url="https://api.telegram.org/bot$TelegramBotToken/sendMessage" http-method=post http-data="parse_mode=Markdown&chat_id=$TelegramChatId&text=$TelegramMessageText" keep-result=no;
+                    $FunctionSendingTelegramMessage $TelegramBotToken $TelegramChatId $TelegramMessageText;
                     :set LastEventLoginID [:tonum [("0x" . [:pick [:tostr $k] 1 [:len $k]])]];
-                };
             };
         };
+    };
