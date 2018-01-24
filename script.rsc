@@ -9,8 +9,8 @@
 :local Hostname [/system identity get name];
 :local EventLogStorage;
 :local TelegramMessageText;
-:local TelegramBotToken "1234567890:0m9BBWnyHAmjI7ztFwrFicrOwra5A3";
-:local TelegramChatId "-1234567890";
+:local TelegramBotToken "1234567890:0m9BBWnyHAmjI7ztFwrFicrOwra5A3"; #Change this for your value
+:local TelegramChatId "-1234567890"; #Change this for your value
 
 #FunctionSendingTelegramMessage
 :global FunctionSendingTelegramMessage do={

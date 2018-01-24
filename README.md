@@ -1,5 +1,7 @@
 # Mikrotik-UserLoginAlert
 
+---
+
 __Purpose:__
 
 It is as simple as possible to send messages to the IM Telegram about the user's login in the device.
@@ -12,6 +14,8 @@ Script running periodically (for example, every minutes) and checking log for ne
 If there have been several logins since the last check, several notifications will be sent.
 
 First commit and tested on RouterOS 6.41 version.
+
+Do not forget change value "TelegramBotToken" and "TelegramChatId".
 
 ---
 
