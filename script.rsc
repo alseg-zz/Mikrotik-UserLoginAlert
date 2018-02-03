@@ -5,7 +5,7 @@
 # read, write, policy, test
 
 # ToDo:
-# 1. Add comments
+# - Fix bug with unicode login attempts - FIXED
 
 :global LastEventLoginID;
 :local CurrentTimeStamp;
