@@ -1,21 +1,21 @@
-#Mikrotik-UserLoginAlert
-#RouterOS 6.41
+# Mikrotik-UserLoginAlert
+# RouterOS 6.41
 
-#Privilegies for running:
-#read, write, policy, test
+# Privilegies for running:
+# read, write, policy, test
 
-#ToDo:
-#1. Add comments
+# ToDo:
+# 1. Add comments
 
 :global LastEventLoginID;
 :local CurrentTimeStamp;
 :local Hostname [/system identity get name];
 :local EventLogStorage;
 :local TelegramMessageText;
-:local TelegramBotToken "1234567890:0m9BBWnyHAmjI7ztFwrFicrOwra5A3"; #Change this for your value
-:local TelegramChatId "-1234567890"; #Change this for your value
+:local TelegramBotToken "1234567890:0m9BBWnyHAmjI7ztFwrFicrOwra5A3"; # Change this for your value
+:local TelegramChatId "-1234567890"; # Change this for your value
 
-#FunctionSendingTelegramMessage
+# FunctionSendingTelegramMessage
 :global FunctionSendingTelegramMessage do={
     :tool fetch mode=https url="https://api.telegram.org/bot$1/sendMessage" http-method=post http-data="parse_mode=Markdown&chat_id=$2&text=$3" keep-result=no;
     :return 0;
@@ -32,9 +32,13 @@
             :set $CurrentTimeStamp [/log get $k value-name=time];
             :set $CurrentLogMessage [/log get $k value-name=message];
             :if ($LastEventLoginID < [:tonum [("0x" . [:pick [:tostr $k] 1 [:len $k]])]]) do={
-                    :set TelegramMessageText ($CurrentTimeStamp . " - " . $Hostname . ":\n" . "`" . $CurrentLogMessage . "`" . "\n---");
+                :set TelegramMessageText ($CurrentTimeStamp . " - " . $Hostname . ":\n" . "`" . $CurrentLogMessage . "`" . "\n---");
+                :do {
                     $FunctionSendingTelegramMessage $TelegramBotToken $TelegramChatId $TelegramMessageText;
-                    :set LastEventLoginID [:tonum [("0x" . [:pick [:tostr $k] 1 [:len $k]])]];
+                } on-error={
+                    $FunctionSendingTelegramMessage $TelegramBotToken $TelegramChatId "Login event occured, put probably login has non-english symbols (unicode)";
+                };
+                :set LastEventLoginID [:tonum [("0x" . [:pick [:tostr $k] 1 [:len $k]])]];
             };
         };
     };
