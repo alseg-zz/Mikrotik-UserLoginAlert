@@ -5,7 +5,8 @@
 # read, write, policy, test
 
 # ToDo:
-# - Fix bug with unicode login attempts - FIXED
+# Fix bug with unicode login attempts - FIXED
+# Fix non-informative output with unicode login attempts - FIXED
 
 :global LastEventLoginID;
 :local CurrentTimeStamp;
@@ -33,11 +34,13 @@
             :set $CurrentLogMessage [/log get $k value-name=message];
             :if ($LastEventLoginID < [:tonum [("0x" . [:pick [:tostr $k] 1 [:len $k]])]]) do={
                 :set TelegramMessageText ($CurrentTimeStamp . " - " . $Hostname . ":\n" . "`" . $CurrentLogMessage . "`" . "\n---");
+                
                 :do {
                     $FunctionSendingTelegramMessage $TelegramBotToken $TelegramChatId $TelegramMessageText;
                 } on-error={
-                    $FunctionSendingTelegramMessage $TelegramBotToken $TelegramChatId "Login event occured, put probably login has non-english symbols (unicode)";
+                    $FunctionSendingTelegramMessage $TelegramBotToken $TelegramChatId ($CurrentTimeStamp . " - " . $Hostname . ":\n" . "`" . "Login event occured, but probably login has non-english symbols (unicode)" . "`" . "\n---");
                 };
+                
                 :set LastEventLoginID [:tonum [("0x" . [:pick [:tostr $k] 1 [:len $k]])]];
             };
         };
