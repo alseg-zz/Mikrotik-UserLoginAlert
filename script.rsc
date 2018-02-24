@@ -4,9 +4,14 @@
 # Privilegies for running:
 # read, write, policy, test
 
+# Installation:
+# /system scheduler add name=Mikrotik-UserLoginAlert start-time=00:00:00 interval=1m on-event=Mikrotik-UserLoginAlert policy=read,write,policy,test
+# /system script add name=Mikrotik-UserLoginAlert source="COPY_PASTE_HERE_SCRIPT" policy=read,write,policy,test
+
 # ToDo:
 # Fix bug with unicode login attempts - FIXED
 # Fix non-informative output with unicode login attempts - FIXED
+# Add excluded events from common log (dude, telnet, etc.) - FIXED
 
 :global LastEventLoginID;
 :local CurrentTimeStamp;
@@ -25,10 +30,10 @@
 # *** Entry point ***
 :if ([:len $LastEventLoginID]=0) do={
     :set LastEventLoginID 0;
-    :set EventLogStorage [/log find where ((topics=system,info,account and (message~"logged in")) or (topics=system,error,critical and (message~"login failure")))];
+    :set EventLogStorage [/log find where (((topics=system,info,account and (message~"logged in")) or (topics=system,error,critical and (message~"login failure"))) and !((message~"via telnet") or (message~"via dude")))];
     :set LastEventLoginID [:tonum ("0x" . [:pick [:tostr ($EventLogStorage->([:len ($EventLogStorage)]-1))] 1 [:len ($EventLogStorage->([:len ($EventLogStorage)]-1))]])];
     } else={
-        :set EventLogStorage [/log find where ((topics=system,info,account and (message~"logged in")) or (topics=system,error,critical and (message~"login failure")))];
+        :set EventLogStorage [/log find where (((topics=system,info,account and (message~"logged in")) or (topics=system,error,critical and (message~"login failure"))) and !((message~"via telnet") or (message~"via dude")))];
         :foreach k in=($EventLogStorage) do={
             :set $CurrentTimeStamp [/log get $k value-name=time];
             :set $CurrentLogMessage [/log get $k value-name=message];
