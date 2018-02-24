@@ -2,6 +2,12 @@
 
 ---
 
+__Screenshot__:
+
+<img src="https://github.com/alseg/Mikrotik-UserLoginAlert/blob/master/Docs/Images/WLAJMLuE2HolWYe.png?raw=true" width="400">
+
+---
+
 __Purpose:__
 
 It is as simple as possible to send messages to the IM Telegram about the user's login in the device.
@@ -30,9 +36,3 @@ Script running periodically (for example, every minutes) and checking log for ne
 If there have been several logins since the last check, several notifications will be sent.
 
 First commit and tested on RouterOS __6.41__ version.
-
----
-
-__Screenshot__:
-
-<img src="https://github.com/alseg/Mikrotik-UserLoginAlert/blob/master/Docs/Images/WLAJMLuE2HolWYe.png?raw=true" width="400">
