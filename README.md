@@ -22,6 +22,14 @@ __Privilegies for running:__
 
 __Installation:__
 
+Config file:
+
+`/system scheduler add name=Mikrotik-UserLoginAlert-Misc start-time=00:00:00 interval=1m on-event=Mikrotik-UserLoginAlert-Misc policy=read,write,policy,test`
+
+`/system script add name=Mikrotik-UserLoginAlert-Misc source="COPY_PASTE_MISC_HERE" policy=read,write,policy,test`
+
+Script:
+
 `/system scheduler add name=Mikrotik-UserLoginAlert start-time=00:00:00 interval=1m on-event=Mikrotik-UserLoginAlert policy=read,write,policy,test`
 
 `/system script add name=Mikrotik-UserLoginAlert source="COPY_PASTE_SCRIPT_TEXT_HERE" policy=read,write,policy,test`
