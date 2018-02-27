@@ -7,7 +7,7 @@
 # Fix bug with unicode login attempts - FIXED
 # Fix non-informative output with unicode login attempts - FIXED
 # Add excluded events from common log (dude, telnet, etc.) - FIXED
-# Optimization code with excluding (:local ExcludeKeywordList {"telnet"; "dude"};) and change code of script
+# Optimization code with excluding (:local ExcludeKeywordList {"telnet"; "dude"};) and change code of script - FIXED
 # Config with private data moved to separate file - FIXED
 # Added some error catching - FIXED
 

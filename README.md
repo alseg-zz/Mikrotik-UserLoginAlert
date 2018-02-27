@@ -28,13 +28,13 @@ Config file:
 
 `/system script add name=Mikrotik-UserLoginAlert-Misc source="COPY_PASTE_MISC_HERE" policy=read,write,policy,test`
 
+Do not forget change value `TelegramBotToken` and `TelegramChatId` (In config file, not in script).
+
 Script:
 
 `/system scheduler add name=Mikrotik-UserLoginAlert start-time=00:00:00 interval=1m on-event=Mikrotik-UserLoginAlert policy=read,write,policy,test`
 
 `/system script add name=Mikrotik-UserLoginAlert source="COPY_PASTE_SCRIPT_TEXT_HERE" policy=read,write,policy,test`
-
-Do not forget change value `TelegramBotToken` and `TelegramChatId`.
 
 ---
 
